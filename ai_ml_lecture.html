@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI & Machine Learning Lecture</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .classroom {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .controls {
+            background: #f8f9fa;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #48bb78;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+        }
+
+        .progress-bar {
+            background: #e2e8f0;
+            height: 8px;
+            position: relative;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .content {
+            padding: 40px;
+            min-height: 500px;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide h2 {
+            color: #2d3748;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .slide h3 {
+            color: #4a5568;
+            font-size: 1.5em;
+            margin: 25px 0 15px 0;
+        }
+
+        .slide p {
+            color: #4a5568;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #f6f8fb 0%, #e9ecef 100%);
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .card h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .card li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .card li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .process-steps {
+            margin: 25px 0;
+        }
+
+        .step {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            position: relative;
+            padding-left: 70px;
+        }
+
+        .step-number {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #667eea;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .example-box {
+            background: #fef5e7;
+            border-left: 4px solid #f39c12;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .example-box strong {
+            color: #e67e22;
+        }
+
+        .data-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .data-card {
+            background: white;
+            border: 2px solid #48bb78;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .data-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(72, 187, 120, 0.3);
+        }
+
+        .data-card h4 {
+            color: #48bb78;
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            background: #2d3748;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .slide-counter {
+            text-align: center;
+            padding: 15px;
+            color: #718096;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="classroom">
+        <div class="header">
+            <h1>🎓 Introduction to AI & Machine Learning</h1>
+            <p>Understanding Generative AI, Machine Learning, and Data Types</p>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-secondary" onclick="previousSlide()">← Previous</button>
+            <button class="btn btn-primary" onclick="nextSlide()">Next →</button>
+            <button class="btn btn-secondary" onclick="resetLecture()">↺ Restart</button>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="slide-counter" id="slideCounter">Slide 1 of 8</div>
+
+        <div class="content">
+            <!-- Slide 1: Introduction -->
+            <div class="slide active">
+                <h2>Welcome to Today's Lecture!</h2>
+                <p>Today we're diving into the fascinating world of Artificial Intelligence and Machine Learning. By the end of this lecture, you'll understand:</p>
+                <div class="data-types">
+                    <div class="data-card">
+                        <h4>🤖 Generative AI</h4>
+                        <p>Creating new content from learned patterns</p>
+                    </div>
+                    <div class="data-card">
+                        <h4>🧠 Machine Learning</h4>
+                        <p>Teaching computers to learn from data</p>
+                    </div>
+                    <div class="data-card">
+                        <h4>📊 Data Types</h4>
+                        <p>Understanding different forms of data</p>
+                    </div>
+                    <div class="data-card">
+                        <h4>🎯 Learning Methods</h4>
+                        <p>How machines actually learn</p>
+                    </div>
+                </div>
+                <p style="margin-top: 30px; text-align: center; font-size: 1.2em; color: #667eea;">Click "Next" to begin the lecture →</p>
+            </div>
+
+            <!-- Slide 2: What is Generative AI? -->
+            <div class="slide">
+                <h2>What is Generative AI?</h2>
+                <p>Generative AI is a specialized subset of artificial intelligence focused on <strong>creating new, original content</strong> rather than just analyzing existing data.</p>
+                
+                <h3>Key Distinction</h3>
+                <div class="comparison">
+                    <div class="card">
+                        <h4>Traditional AI/ML</h4>
+                        <ul>
+                            <li>Focuses on classification</li>
+                            <li>Makes predictions</li>
+                            <li>Analyzes existing data</li>
+                            <li>Structured decision-making</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4>Generative AI</h4>
+                        <ul>
+                            <li>Creates new content</li>
+                            <li>Uses learned patterns</li>
+                            <li>Generates novel outputs</li>
+                            <li>Adaptable and creative</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <strong>Examples:</strong> Amazon Titan and Anthropic's Claude generate text, while other GenAI models create images, music, and code!
+                </div>
+            </div>
+
+            <!-- Slide 3: When to Use Each? -->
+            <div class="slide">
+                <h2>Traditional AI vs Generative AI: Use Cases</h2>
+                
+                <div class="comparison">
+                    <div class="card">
+                        <h4>Traditional AI/ML Best For:</h4>
+                        <ul>
+                            <li>Medical diagnostics</li>
+                            <li>Credit scoring</li>
+                            <li>Structured analysis</li>
+                            <li>Rigid decision-making</li>
+                            <li>High interpretability needs</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h4>Generative AI Best For:</h4>
+                        <ul>
+                            <li>Innovation and brainstorming</li>
+                            <li>Content creation</li>
+                            <li>Creative tasks</li>
+                            <li>Automating writing/design</li>
+                            <li>Adaptable solutions</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <p style="margin-top: 30px;">The key is choosing the right tool for your specific problem. Need precision and interpretability? Go traditional. Need creativity and adaptability? Choose GenAI!</p>
+            </div>
+
+            <!-- Slide 4: Machine Learning Overview -->
+            <div class="slide">
+                <h2>What is Machine Learning?</h2>
+                <p>Machine Learning is a specialized branch of AI that enables computers to <strong>learn from data and improve their performance over time</strong> without being explicitly programmed for every specific task.</p>
+
+                <h3>Think of it this way:</h3>
+                <p>Instead of writing rules for every possible scenario, we give the computer examples and let it figure out the patterns on its own!</p>
+
+                <div class="example-box">
+                    <strong>Real-world analogy:</strong> It's like teaching a child to recognize animals. You don't give them a rulebook; you show them many pictures of cats and dogs until they learn to tell the difference themselves.
+                </div>
+            </div>
+
+            <!-- Slide 5: The ML Process -->
+            <div class="slide">
+                <h2>The Machine Learning Process</h2>
+                <p>Machine learning follows a systematic 5-step process:</p>
+
+                <div class="process-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h4>Data Collection</h4>
+                        <p>Gathering massive amounts of relevant data (text, images, or numbers) that will teach the model.</p>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h4>Preprocessing</h4>
+                        <p>Cleaning and organizing raw data into a usable format through "feature engineering" to highlight important variables.</p>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h4>Training</h4>
+                        <p>Feeding data into an algorithm (like a neural network). The algorithm adjusts its parameters to minimize prediction errors.</p>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <h4>Evaluation</h4>
+                        <p>Testing the model on new, unseen data to ensure it can generalize its knowledge to real-world scenarios.</p>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">5</div>
+                        <h4>Inference</h4>
+                        <p>Deploying the trained model to perform real-world tasks, like flagging fraudulent transactions.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 6: Types of Data -->
+            <div class="slide">
+                <h2>Types of Data in Machine Learning</h2>
+
+                <h3>1. Labeled vs Unlabeled Data</h3>
+                <div class="comparison">
+                    <div class="card">
+                        <h4>Labeled Data</h4>
+                        <p>Each instance has a label/target variable representing the desired output.</p>
+                        <div class="example-box">
+                            <strong>Example:</strong> Images with tags like "cat", "dog", "car"
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h4>Unlabeled Data</h4>
+                        <p>Instances without any associated labels or target variables.</p>
+                        <div class="example-box">
+                            <strong>Example:</strong> A collection of images without any annotations
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px;">2. Structured vs Unstructured Data</h3>
+                <div class="data-types">
+                    <div class="data-card">
+                        <h4>📋 Tabular Data</h4>
+                        <p>Spreadsheets, databases, CSV files</p>
+                    </div>
+                    <div class="data-card">
+                        <h4>⏰ Time-Series</h4>
+                        <p>Stock prices, sensor readings, weather</p>
+                    </div>
+                    <div class="data-card">
+                        <h4>📝 Text Data</h4>
+                        <p>Documents, articles, social media</p>
+                    </div>
+                    <div class="data-card">
+                        <h4>🖼️ Image Data</h4>
+                        <p>Photos, video frames, digital images</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 7: Learning Methods -->
+            <div class="slide">
+                <h2>Three Main Learning Methods</h2>
+
+                <div class="process-steps">
+                    <div class="step" style="border-color: #48bb78;">
+                        <div class="step-number" style="background: #48bb78;">1</div>
+                        <h4>Supervised Learning</h4>
+                        <p>Algorithms are trained on <strong>labeled data</strong>. The model learns from examples and predicts outcomes for new, unseen data.</p>
+                        <div class="example-box">
+                            <strong>Example:</strong> Email spam detection - the model learns from emails labeled as "spam" or "not spam"
+                        </div>
+                    </div>
+
+                    <div class="step" style="border-color: #f39c12;">
+                        <div class="step-number" style="background: #f39c12;">2</div>
+                        <h4>Unsupervised Learning</h4>
+                        <p>Algorithms learn from <strong>unlabeled data</strong>. The model doesn't know the correct output and finds patterns by itself.</p>
+                        <div class="example-box">
+                            <strong>Example:</strong> Customer segmentation - grouping customers by shopping behavior without predefined categories
+                        </div>
+                    </div>
+
+                    <div class="step" style="border-color: #e74c3c;">
+                        <div class="step-number" style="background: #e74c3c;">3</div>
+                        <h4>Reinforcement Learning</h4>
+                        <p>The machine receives only a <strong>performance score</strong> as guidance. It learns through trial and error, receiving rewards or penalties for actions.</p>
+                        <div class="example-box">
+                            <strong>Example:</strong> Game-playing AI or self-driving cars that improve by learning from their mistakes
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 8: Types of Inferencing -->
+            <div class="slide">
+                <h2>Two Types of Inferencing</h2>
+                <p>Once a model is trained, it needs to make predictions. This is called <strong>inferencing</strong>.</p>
+
+                <div class="comparison">
+                    <div class="card">
+                        <h4>Batch Inferencing</h4>
+                        <p>The computer analyzes a <strong>large amount of data all at once</strong> to provide a set of results.</p>
+                        <ul>
+                            <li>Processes data in groups</li>
+                            <li>Speed less crucial</li>
+                            <li>Accuracy is priority</li>
+                        </ul>
+                        <div class="example-box">
+                            <strong>Example:</strong> Monthly data analysis reports, processing thousands of images overnight
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h4>Real-time Inferencing</h4>
+                        <p>The computer makes <strong>decisions quickly</strong> in response to new information as it arrives.</p>
+                        <ul>
+                            <li>Instant processing</li>
+                            <li>Speed is critical</li>
+                            <li>Decisions in milliseconds</li>
+                        </ul>
+                        <div class="example-box">
+                            <strong>Example:</strong> Chatbots responding to messages, self-driving cars making split-second decisions
+                        </div>
+                    </div>
+                </div>
+
+                <p style="margin-top: 30px; text-align: center; font-size: 1.2em; color: #667eea;">🎉 Congratulations! You've completed the lecture!</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>💡 Questions? Think about how these concepts apply to technology you use every day!</p>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                }
+            });
+
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('slideCounter').textContent = `Slide ${currentSlide + 1} of ${totalSlides}`;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        function resetLecture() {
+            currentSlide = 0;
+            updateSlide();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+        });
+
+        updateSlide();
+    </script>
+</body>
+</html>
